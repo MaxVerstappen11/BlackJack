@@ -173,8 +173,8 @@ def sum(cards):
     sum = 0
     for card in cards:
         match card:
-            case "Jumbo": sum += 10
-            case "Dama": sum += 10
+            case "Jack": sum += 10
+            case "Queen": sum += 10
             case "King": sum += 10
             case "Ace": sum += 11
             case _: sum += card
@@ -187,8 +187,8 @@ def sum(cards):
 def more_cards(cards):
     x = randint(2, 14)
     match x:
-        case 11: cards.append("Jumbo")
-        case 12: cards.append("Dama")
+        case 11: cards.append("Jack")
+        case 12: cards.append("Queen")
         case 13: cards.append("King")
         case 14: cards.append("Ace")
         case _: cards.append(x)
