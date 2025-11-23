@@ -14,9 +14,10 @@ balance2 = 1000
 bet2 = 0
 players = 5
 choice = "y"
+rounds = 0
 
 def main():
-    global player1_sum, bot_sum, balance1, balance2, choice
+    global player1_sum, bot_sum, balance1, balance2, choice, rounds
     print('Wellcome to BlackJack!')
 
     while choice == "y" and balance1 > 0 and balance2 > 0:
@@ -29,31 +30,32 @@ def main():
         else:
             winner(player2_sum)
         after_rounds()
+        rounds += 1
+    print(f'You played {rounds} rounds')
 
 def bets():
-    global balance1, bet1, balance2, bet2, players, name1, name2
+    global balance1, bet1, balance2, bet2, players, name1, name2, rounds
     while players != 0 and players != 1:
         players = int(input('Would you like to play against a bot (0) or against your friend (1)? '))
     print()
 
-    if players == 0:
+
+    if players == 0 and rounds == 0:
         name1 = input('What\'s your name? ')
-    else:
+    elif rounds == 0:
         name1 = input('Player 1\'s name: ')
         name2 = input('Player 2\'s name: ')
 
     while bet1 > balance1 or bet1 <= 0:
-        bet1 = int(input(f'{name1} balance is {balance1}$\nHow much would you like to risk? '))
-    balance1 -= bet1
+        bet1 = int(input(f'{name1}\'s balance is {balance1}$\nHow much would you like to risk? '))
 
     if players == 1:
         print()
         while bet2 > balance2 or bet2 <= 0:
-            bet2 = int(input(f'{name2} balance is {balance2}$\nHow much would you like to risk? '))
-        balance2 -= bet2
+            bet2 = int(input(f'{name2}\'s balance is {balance2}$\nHow much would you like to risk? '))
 
 def player1():
-    global player1_sum, balance1, name1
+    global player1_sum, balance1, bet1, name1, balance2, bet2
     print(f'\n{name1}\'s turn')
     want = ""
     for i in range(2):
@@ -76,10 +78,12 @@ def player1():
     player1_sum = sum(player1_cards)
 
     if player1_sum > 21:
-        print('You lost, because you have too much cards!')
+        print(f'{name1} lost, because he/she has too much cards!')
+        balance1 -= bet1
+        balance2 += bet2
 
 def player2():
-    global player1_sum, player2_sum, balance2, name2
+    global player1_sum, player2_sum, balance2, bet2, name2, balance1, bet1
     if player1_sum < 22 and players == 1:
         print(f'\n{name2}\'s turn')
         want = ""
@@ -93,7 +97,7 @@ def player2():
 
         while want == "y" and sum(player2_cards) < 21:
             more_cards(player2_cards)
-            print_cards(player2_cards, "Player 2")
+            print_cards(player2_cards, "Your")
             
             print(f'Your total is {sum(player2_cards)}')
 
@@ -103,7 +107,9 @@ def player2():
         player2_sum = sum(player2_cards)
 
         if player2_sum > 21:
-            print('You lost, because you have too much cards!')
+            print(f'{name2} lost, because he/she has too much cards!')
+            balance1 += bet1
+            balance2 -= bet2
 
 def bot():
     global bot_sum, player1_sum, balance1, players
@@ -130,25 +136,30 @@ def winner(sum2):
         print()
         if player1_sum > sum2:
             print(f'{name1} won!')
-            balance1 += bet1 * 2
+            balance1 += bet1
+            balance2 -= bet2
         elif player1_sum < player2_sum:
             print(f'{name2} won!')
-            balance2 += bet2 * 2
-        elif player1_sum <= bot_sum:
+            balance2 += bet2
+            balance1 -= bet1
+        elif player1_sum <= bot_sum and players == 0:
             print('You lost!')
+            balance1 -= bet1
+        elif player1_sum == player2_sum:
+            print('Draw')
     
         if players == 0:
             print(f'Your new balance is {balance1}$')
         elif players == 1:
-            print(f'{name1} new balance is {balance1}$')
-            print(f'{name2} new balance is {balance2}$')
+            print(f'{name1}\'s new balance is {balance1}$')
+            print(f'{name2}\'s new balance is {balance2}$')
         print()
     elif players == 1:
-        print(f'{name1} new balance is {balance1}$')
-        print(f'{name2} new balance is {balance2}$')
+        print(f'{name1}\'s new balance is {balance1}$')
+        print(f'{name2}\'s new balance is {balance2}$')
         print()
     elif players == 0:
-        print(f'{name1} new balance is {balance1}$')
+        print(f'{name1}\'s new balance is {balance1}$')
         print()
          
 def after_rounds():
@@ -171,11 +182,11 @@ def after_rounds():
         else:
             print(f'\nThe absolute winner is {name1}!\n')
         
-        player1_cards.clear()
-        player2_cards.clear()
-        bot_cards.clear()
-        bet1 = 0
-        bet2 = 0
+    player1_cards.clear()
+    player2_cards.clear()
+    bot_cards.clear()
+    bet1 = 0
+    bet2 = 0
         
 def sum(cards):
     sum = 0
