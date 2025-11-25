@@ -38,12 +38,11 @@ def bets():
         players = int(input('Would you like to play against a bot (0) or against your friend (1)? '))
     print()
 
-
     if players == 0 and rounds == 0:
-        name1 = input('What\'s your name? ')
+        name1 = input('What\'s your name? ').strip()
     elif rounds == 0:
-        name1 = input('Player 1\'s name: ')
-        name2 = input('Player 2\'s name: ')
+        name1 = input('Player 1\'s name: ').strip()
+        name2 = input('Player 2\'s name: ').strip()
 
     while bet1 > balance1 or bet1 <= 0 and players == 0:
         bet1 = int(input(f'{name1}\'s balance is {balance1}$\nHow much would you like to risk? '))
@@ -58,7 +57,8 @@ def player1():
     print_cards(player1_cards, "Your")
     print(f'Your total is {sum(player1_cards)}')
 
-    want = input('Would you like more cards (y/n)? ')
+    if sum(player1_cards) < 21:
+        want = input('Would you like more cards (y/n)? ')
 
     while want == "y" and sum(player1_cards) < 21:
         more_cards(player1_cards)
@@ -89,7 +89,8 @@ def player2():
         print_cards(player2_cards, "Your")
         print(f'Your total is {sum(player2_cards)}')
 
-        want = input('Would you like more cards (y/n)? ')
+        if sum(player2_cards) < 21:
+            want = input('Would you like more cards (y/n)? ')
 
         while want == "y" and sum(player2_cards) < 21:
             more_cards(player2_cards)
