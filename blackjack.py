@@ -154,7 +154,7 @@ def winner(sum2):
         print()
          
 def after_rounds():
-    global balance1, choice, players, bet1, bet2
+    global balance1, choice, players, bet1, bet2, name1, name2
     if balance1 > 0:
         choice = input("Would you like to continue (y/n)? ")
 
@@ -163,11 +163,11 @@ def after_rounds():
 
     if choice == "n" and players == 1:    
         if bet1 < bet2:
-            print(f'Results: a: {bet1} - b: {bet2}\nWinner is {name2}!')
+            print(f'Results: {name1}: {bet1} - {name2}: {bet2}\nWinner is {name2}!')
         elif bet1 > bet2:
-            print(f'Results: a: {bet1} - b: {bet2}\nWinner is {name1}!')
+            print(f'Results: {name1}: {bet1} - {name2}: {bet2}\nWinner is {name1}!')
         elif bet1 == bet2:
-            print(f'Results: a: {bet1} - b: {bet2}\nDraw')
+            print(f'Results: {name1}: {bet1} - {name2}: {bet2}\nDraw')
         
     player1_cards.clear()
     player2_cards.clear()
